@@ -1,0 +1,43 @@
+# ============ ChunkPreloader ============
+# Zone prepregeneree : un carree centre sur "center", de
+# (overworld-half-size-blocks * 2) x (overworld-half-size-blocks * 2) blocs.
+# 7500 => 15000 x 15000 blocs (soit 938 x 938 chunks).
+overworld-half-size-blocks: 7500
+
+# Le nether est automatiquement divise par ce ratio (echelle 1:8 du nether).
+# 7500 / 8 = 937 => 1874 x 1874 blocs (soit 118 x 118 chunks).
+nether-divisor: 8
+
+# Coordonnees du centre de la zone de pregeneration.
+center:
+  x: 0
+  z: 0
+
+# Lance automatiquement la pregeneration (overworld + nether) au demarrage.
+auto-start: false
+
+# Nombre maximum de chunks en cours de generation simultanement (plafond).
+max-outstanding-chunks: 64
+
+# Regulation adaptative : la pregen demarre doucement, monte progressivement
+# vers le plafond tant que le TPS est sain (>= 19.5), et recul automatiquement
+# (découpe la charge par 2) si le TPS passe sous min-tps.
+adaptive: true
+
+# Met la pregeneration en pause si le TPS passe sous ce seuil.
+min-tps: 17.0
+
+# Sauvegarde du monde toutes les X chunks completes (0 = seulement a la fin).
+save-every-chunks: 100000
+
+# Noms des mondes (repli automatique sur l'environnement si introuvable).
+worlds:
+  overworld: world
+  nether: world_nether
+
+rtp:
+  # Nombre d'essais maximum pour trouver un endroit sur (avant d'abandonner).
+  max-attempts: 12
+  # Marge sous le plafond du nether : ignore les positions plus haut que
+  # max_height - nether-roof-margin (evite de tp sur le toit de bedrock).
+  nether-roof-margin: 10
