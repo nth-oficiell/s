@@ -1,0 +1,23 @@
+name: ChunkPreloader
+version: 1.0.0
+main: dev.chunkpreloader.ChunkPreloaderPlugin
+api-version: '1.21'
+author: Vibe
+description: Pregeneration 15k x 15k (nether = /8) + commande /rtp world|nether
+
+commands:
+  preload:
+    description: Gerer la pregeneration des chunks
+    usage: /preload <start|stop|status> [world|nether]
+    permission: chunkpreloader.admin
+  rtp:
+    description: Teleportation aleatoire dans le monde normal ou le nether
+    usage: /rtp <world|nether>
+
+permissions:
+  chunkpreloader.admin:
+    description: Acces a la commande /preload
+    default: op
+  chunkpreloader.rtp:
+    description: Acces a la commande /rtp
+    default: true
