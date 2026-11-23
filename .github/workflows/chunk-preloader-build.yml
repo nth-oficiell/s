@@ -4,15 +4,13 @@ on:
   push:
     paths:
       - 'chunk-preloader/**'
+      - '!chunk-preloader/out/**'
       - '.github/workflows/chunk-preloader-build.yml'
-    paths-ignore:
-      - 'chunk-preloader/out/**'
   pull_request:
     paths:
       - 'chunk-preloader/**'
+      - '!chunk-preloader/out/**'
       - '.github/workflows/chunk-preloader-build.yml'
-    paths-ignore:
-      - 'chunk-preloader/out/**'
   workflow_dispatch:
 
 permissions:
