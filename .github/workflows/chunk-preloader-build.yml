@@ -2,15 +2,25 @@ name: ChunkPreloader build
 
 on:
   push:
-    branches: [main]
     paths:
       - 'chunk-preloader/**'
       - '.github/workflows/chunk-preloader-build.yml'
+    paths-ignore:
+      - 'chunk-preloader/out/**'
   pull_request:
     paths:
       - 'chunk-preloader/**'
       - '.github/workflows/chunk-preloader-build.yml'
+    paths-ignore:
+      - 'chunk-preloader/out/**'
   workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: chunk-preloader-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   build:
@@ -28,9 +38,27 @@ jobs:
         working-directory: chunk-preloader
         run: mvn -B -ntp -U package
 
-      - name: Upload plugin jar
+      - name: Copy jar into out/
+        run: |
+          mkdir -p chunk-preloader/out
+          cp chunk-preloader/target/ChunkPreloader-*.jar chunk-preloader/out/
+
+      - name: Commit jar to the branch
+        if: github.event_name == 'push'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add chunk-preloader/out
+          if git diff --cached --quiet; then
+            echo "No jar change to commit"
+          else
+            git commit -m "Build ChunkPreloader jar [skip ci]"
+            git push
+          fi
+
+      - name: Upload plugin jar artifact
         uses: actions/upload-artifact@v4
         with:
           name: ChunkPreloader
-          path: chunk-preloader/target/ChunkPreloader-*.jar
+          path: chunk-preloader/out/ChunkPreloader-*.jar
           if-no-files-found: error

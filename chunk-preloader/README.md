@@ -24,6 +24,13 @@ mvn package
 Le jar est généré dans `target/ChunkPreloader-1.0.0.jar`. Le copier dans le
 dossier `plugins/` d'un serveur Paper 1.21.11.
 
+Le CI GitHub Actions compile aussi automatiquement le jar : la dernière
+version compilée est toujours disponible dans `chunk-preloader/out/` (et en
+artefact sur les runs [Actions](../../actions/workflows/chunk-preloader-build.yml)).
+
+Des réglages serveur recommandés (flags JVM, Paper, distances) sont dans
+[`optimisation-serveur/README.md`](../optimisation-serveur/README.md).
+
 ## Commandes
 
 | Commande | Description | Permission |
