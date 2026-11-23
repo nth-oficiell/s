@@ -1,0 +1,36 @@
+name: ChunkPreloader build
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'chunk-preloader/**'
+      - '.github/workflows/chunk-preloader-build.yml'
+  pull_request:
+    paths:
+      - 'chunk-preloader/**'
+      - '.github/workflows/chunk-preloader-build.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+
+      - name: Build ChunkPreloader
+        working-directory: chunk-preloader
+        run: mvn -B -ntp -U package
+
+      - name: Upload plugin jar
+        uses: actions/upload-artifact@v4
+        with:
+          name: ChunkPreloader
+          path: chunk-preloader/target/ChunkPreloader-*.jar
+          if-no-files-found: error
